@@ -70,6 +70,10 @@ it('removes product images when a product is deleted', function () {
     $product->delete();
 
     expect($product->refresh()->trashed())->toBeTrue();
+
+    //force delete product to remove images
+    $product->forceDelete();
+    
     Storage::disk('public')->assertMissing([
         'products/delete-front.webp',
         'products/delete-side.webp',

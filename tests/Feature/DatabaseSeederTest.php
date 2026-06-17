@@ -31,7 +31,7 @@ it('seeds a complete demonstration data set', function () {
         ->and(Booking::query()->count())->toBe(5)
         ->and(BookingItem::query()->count())->toBe(5)
         ->and(PricingRule::query()->count())->toBe(2)
-        ->and(User::query()->where('email', 'admin@centerthis.test')->exists())->toBeTrue();
+        ->and(User::query()->where('email', 'admin@centerthis.co.za')->exists())->toBeTrue();
 
     Product::query()->each(function (Product $product): void {
         expect($product->images)->toHaveCount(3);

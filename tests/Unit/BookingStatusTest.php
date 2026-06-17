@@ -9,10 +9,10 @@ it('provides labels and filament colours for each status', function (BookingStat
 })->with([
     'pending' => [BookingStatus::Pending, 'Pending', 'warning'],
     'confirmed' => [BookingStatus::Confirmed, 'Confirmed', 'info'],
-    'collected' => [BookingStatus::Collected, 'Collected', 'primary'],
+    'collected' => [BookingStatus::Collected, 'Collected', 'blue'],
     'completed' => [BookingStatus::Completed, 'Completed', 'success'],
     'cancelled' => [BookingStatus::Cancelled, 'Cancelled', 'danger'],
-    'released' => [BookingStatus::Released, 'Released', 'secondary'],
+    'released' => [BookingStatus::Released, 'Released', 'red'],
 ]);
 
 it('keeps the live statuses aligned with inventory occupancy', function () {
