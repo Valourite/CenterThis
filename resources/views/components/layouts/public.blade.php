@@ -145,6 +145,7 @@
                 <div class="site-container flex flex-col gap-3 py-5 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
                     <p>&copy; {{ now()->year }} CenterThis. All moments reserved.</p>
                     <p>Pretoria · Johannesburg · Centurion · Midrand · Gauteng</p>
+                    <p>Developed by <a href="https://valourite.co.za" class="transition-colors hover:text-blue-600">Valourite</a></p>
                 </div>
             </div>
         </footer>
