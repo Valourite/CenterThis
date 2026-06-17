@@ -3,6 +3,7 @@
 use App\Actions\CreateBooking;
 use App\Enums\BookingStatus;
 use App\Exceptions\InsufficientAvailabilityException;
+use App\Mail\BookingConfirmation;
 use App\Models\Booking;
 use App\Models\BookingItem;
 use App\Models\Customer;
@@ -10,6 +11,7 @@ use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
     $product = Product::query()->create([
@@ -47,6 +49,17 @@ function bookingData(Variant $variant, int $quantity = 2): array
         'notes' => 'Collect after 10:00.',
     ];
 }
+
+it('emails the customer a booking confirmation with their reference', function () {
+    Mail::fake();
+
+    $booking = $this->action->execute(bookingData($this->variant));
+
+    Mail::assertSent(BookingConfirmation::class, function (BookingConfirmation $mail) use ($booking): bool {
+        return $mail->booking->is($booking)
+            && $mail->hasTo('jane@example.test');
+    });
+});
 
 it('creates a pending booking with priced items and totals', function () {
     $booking = $this->action->execute(bookingData($this->variant));

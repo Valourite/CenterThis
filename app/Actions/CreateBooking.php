@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Enums\BookingStatus;
+use App\Mail\BookingConfirmation;
 use App\Models\Booking;
 use App\Models\Customer;
 use App\Models\Variant;
@@ -13,8 +14,11 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Throwable;
 
 class CreateBooking
 {
@@ -44,7 +48,7 @@ class CreateBooking
 
         $itemQuantities = $this->itemQuantities($data['items']);
 
-        return DB::transaction(function () use ($data, $collectionDate, $returnDate, $itemQuantities): Booking {
+        $booking = DB::transaction(function () use ($data, $collectionDate, $returnDate, $itemQuantities): Booking {
             $variants = $this->lockVariants($itemQuantities->keys()->all());
 
             $rentalCents = 0;
@@ -101,8 +105,31 @@ class CreateBooking
 
             $booking->items()->createMany($pricedItems);
 
-            return $booking->load(['customer', 'items.variant']);
+            return $booking->load(['customer', 'items.variant.product']);
         }, attempts: 5);
+
+        $this->sendConfirmation($booking);
+
+        return $booking;
+    }
+
+    private function sendConfirmation(Booking $booking): void
+    {
+        $email = $booking->customer?->email;
+
+        if ($email === null || $email === '') {
+            return;
+        }
+
+        try {
+            Mail::to($email)->send(new BookingConfirmation($booking));
+        } catch (Throwable $exception) {
+            // A failed confirmation email must never roll back a committed booking.
+            Log::error('Failed to send booking confirmation email.', [
+                'booking_id' => $booking->id,
+                'exception' => $exception->getMessage(),
+            ]);
+        }
     }
 
     /**

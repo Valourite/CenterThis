@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->brandName('CenterThis Studio')
             ->login()
+            ->profile(isSimple: false)
             ->spa()
             ->defaultThemeMode(ThemeMode::Light)
             ->colors([
