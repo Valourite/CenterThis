@@ -63,9 +63,11 @@ bring_app_up() {
         cp -R "$APP_DIR/public/images" "$PUBLIC_DIR/images"
     fi
 
-    echo "Linking public storage..."
+    echo "Publishing public storage..."
+    mkdir -p "$APP_DIR/storage/app/public"
     rm -rf "$PUBLIC_DIR/storage"
-    ln -s "$APP_DIR/storage/app/public" "$PUBLIC_DIR/storage"
+    mkdir -p "$PUBLIC_DIR/storage"
+    cp -a "$APP_DIR/storage/app/public/." "$PUBLIC_DIR/storage/" 2>/dev/null || true
 
     echo "Copying SEO discovery files..."
     if [ -f "$APP_DIR/public/robots.txt" ]; then
@@ -84,6 +86,11 @@ bring_app_up() {
 
     if [ -d "$PUBLIC_DIR/images" ]; then
         chmod -R 755 "$PUBLIC_DIR/images" || true
+    fi
+
+    if [ -d "$PUBLIC_DIR/storage" ]; then
+        chmod -R 755 "$PUBLIC_DIR/storage" || true
+        find "$PUBLIC_DIR/storage" -type f -exec chmod 644 {} \; || true
     fi
 
     echo "Clearing Laravel caches..."
