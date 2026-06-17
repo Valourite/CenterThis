@@ -1,0 +1,46 @@
+/*
+|--------------------------------------------------------------------------
+| Storefront colour palette
+|--------------------------------------------------------------------------
+|
+| Change these values to update the colours used throughout the public site.
+| The semantic names describe each colour's role rather than its current hue.
+|
+*/
+
+@theme {
+    /* Main page surfaces */
+    --color-canvas: #f1ede4;
+    --color-canvas-deep: #e6dfd1;
+    --color-surface: #fbfaf6;
+    --color-surface-muted: #d8d1c5;
+    --color-surface-strong: #b9ae9d;
+    --color-muted: #6f746d;
+    --color-muted-soft: #e6dfd1;
+
+    /* Brand colours */
+    --color-primary: #1f3a30;
+    --color-primary-strong: #10231d;
+    --color-primary-deep: #172720;
+    --color-primary-soft: #a9b3a2;
+    --color-secondary: #80644d;
+    --color-secondary-strong: #4f3c2f;
+    --color-secondary-soft: #c9b9a7;
+    --color-accent: #d3c49f;
+    --color-accent-soft: #efe6cc;
+
+    /* Text and dark surfaces */
+    --color-ink: #171a17;
+    --color-black: #0d100e;
+    --color-white: #fffdf8;
+
+    /* Status and feedback colours */
+    --color-info: #5f7f82;
+    --color-info-soft: #dce8e7;
+    --color-success: #557462;
+    --color-success-soft: #dfe9df;
+    --color-warning: #b08a42;
+    --color-warning-soft: #f1e3c2;
+    --color-danger: #a55845;
+    --color-danger-soft: #ecd4cc;
+}
