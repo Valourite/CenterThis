@@ -58,16 +58,16 @@ class PricingRuleForm
                     ->live()
                     ->prefixIcon(Heroicon::OutlinedAdjustmentsHorizontal)
                     ->helperText('Sets which catalogue records this rule can apply to.'),
-                Select::make('scope_id')
-                    ->label('Scoped record')
+                Select::make('scope_ids')
+                    ->label('Scoped records')
                     ->options(fn (Get $get): array => self::scopeOptions((string) $get('scope')))
+                    ->multiple()
                     ->searchable()
                     ->preload()
-                    ->nullable()
                     ->required(fn (Get $get): bool => $get('scope') !== 'global')
                     ->hidden(fn (Get $get): bool => $get('scope') === 'global')
                     ->prefixIcon(Heroicon::OutlinedHashtag)
-                    ->helperText('Choose the category, product, or variant this rule is limited to.'),
+                    ->helperText('Choose the categories, products, or variants this rule is limited to.'),
                 DatePicker::make('starts_at')
                     ->prefixIcon(Heroicon::OutlinedCalendarDays)
                     ->helperText('Optional first date this rule can apply.'),

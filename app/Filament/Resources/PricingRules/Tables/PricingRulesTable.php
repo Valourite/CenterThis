@@ -39,9 +39,13 @@ class PricingRulesTable
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => PricingRule::scopes()[$state] ?? $state)
                     ->sortable(),
-                TextColumn::make('scope_id')
-                    ->label('Scope ID')
-                    ->placeholder('All'),
+                TextColumn::make('scope_targets_count')
+                    ->label('Targets')
+                    ->counts('scopeTargets')
+                    ->badge()
+                    ->formatStateUsing(fn (int $state, PricingRule $record): string => $record->scope === 'global'
+                        ? 'All'
+                        : (string) $state),
                 TextColumn::make('priority')
                     ->sortable(),
                 IconColumn::make('active')

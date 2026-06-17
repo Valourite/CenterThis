@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\PricingRuleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property array<string, mixed>|null $config
@@ -23,7 +24,6 @@ class PricingRule extends Model
         'effect_value',
         'config',
         'scope',
-        'scope_id',
         'starts_at',
         'ends_at',
         'min_days',
@@ -50,6 +50,47 @@ class PricingRule extends Model
             'priority' => 'integer',
             'active' => 'boolean',
         ];
+    }
+
+    /**
+     * @return HasMany<PricingRuleScope, $this>
+     */
+    public function scopeTargets(): HasMany
+    {
+        return $this->hasMany(PricingRuleScope::class);
+    }
+
+    /**
+     * Scope record ids this rule is limited to (empty for global rules).
+     *
+     * @return array<int, int>
+     */
+    public function scopeTargetIds(): array
+    {
+        return $this->scopeTargets
+            ->pluck('scope_id')
+            ->map(fn (int $id): int => (int) $id)
+            ->all();
+    }
+
+    /**
+     * Replace this rule's scope targets with the given record ids.
+     *
+     * @param  array<int, int|string>  $ids
+     */
+    public function syncScopeTargets(array $ids): void
+    {
+        $ids = array_values(array_unique(array_filter(array_map('intval', $ids))));
+
+        $this->scopeTargets()->delete();
+
+        if ($ids !== []) {
+            $this->scopeTargets()->createMany(
+                array_map(static fn (int $id): array => ['scope_id' => $id], $ids),
+            );
+        }
+
+        $this->setRelation('scopeTargets', $this->scopeTargets()->get());
     }
 
     /**

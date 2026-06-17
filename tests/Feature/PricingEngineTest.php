@@ -109,18 +109,18 @@ it('applies configurable discounts only when conditions match', function () {
 });
 
 it('can limit configurable rules by weekday and product scope', function () {
-    PricingRule::create([
+    $rule = PricingRule::create([
         'type' => 'configurable',
         'name' => 'Weekend product surcharge',
         'effect_direction' => 'surcharge',
         'effect_type' => 'fixed_item',
         'effect_value' => 25,
         'scope' => 'product',
-        'scope_id' => $this->variant->product_id,
         'apply_weekdays' => [0, 6],
         'priority' => 10,
         'active' => true,
     ]);
+    $rule->syncScopeTargets([$this->variant->product_id]);
 
     $weekdayHire = $this->engine->price(PricingContext::make($this->variant, 2, '2026-07-01', '2026-07-02'));
     $weekendHire = $this->engine->price(PricingContext::make($this->variant, 2, '2026-07-04', '2026-07-04'));
@@ -136,17 +136,17 @@ it('can limit configurable rules by weekday and product scope', function () {
 });
 
 it('can override the unit rental rate with a configurable rule', function () {
-    PricingRule::create([
+    $rule = PricingRule::create([
         'type' => 'configurable',
         'name' => 'Promotional unit rate',
         'effect_direction' => 'discount',
         'effect_type' => 'override_unit_rate',
         'effect_value' => 20,
         'scope' => 'variant',
-        'scope_id' => $this->variant->id,
         'priority' => 10,
         'active' => true,
     ]);
+    $rule->syncScopeTargets([$this->variant->id]);
 
     $breakdown = $this->engine->price(PricingContext::make($this->variant, 2, '2026-07-01', '2026-07-02'));
 

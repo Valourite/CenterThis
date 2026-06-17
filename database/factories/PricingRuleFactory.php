@@ -25,7 +25,6 @@ class PricingRuleFactory extends Factory
             'effect_value' => fake()->numberBetween(5, 20),
             'config' => null,
             'scope' => 'global',
-            'scope_id' => null,
             'starts_at' => null,
             'ends_at' => null,
             'min_days' => fake()->numberBetween(3, 7),

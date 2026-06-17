@@ -56,6 +56,7 @@ class PricingEngine
     private function activeRules(): iterable
     {
         return PricingRuleModel::query()
+            ->with('scopeTargets')
             ->where('active', true)
             ->orderBy('priority')
             ->cursor();
@@ -93,16 +94,24 @@ class PricingEngine
 
     private function scopeMatches(PricingRuleModel $rule, PricingContext $context): bool
     {
+        if ($rule->scope === 'global') {
+            return true;
+        }
+
         $product = $context->variant->product;
 
-        return match ($rule->scope) {
-            'global' => true,
-            'variant' => (int) $rule->scope_id === $context->variant->id,
-            'product' => (int) $rule->scope_id === $context->variant->product_id,
-            'category' => $product instanceof Product
-                && (int) $rule->scope_id === $product->category_id,
-            default => false,
+        $targetId = match ($rule->scope) {
+            'variant' => $context->variant->id,
+            'product' => $context->variant->product_id,
+            'category' => $product instanceof Product ? $product->category_id : null,
+            default => null,
         };
+
+        if ($targetId === null) {
+            return false;
+        }
+
+        return in_array((int) $targetId, $rule->scopeTargetIds(), true);
     }
 
     private function dateRangeMatches(PricingRuleModel $rule, PricingContext $context): bool
