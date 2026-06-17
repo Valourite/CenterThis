@@ -64,8 +64,13 @@ bring_app_up() {
     fi
 
     echo "Copying SEO discovery files..."
-    cp "$APP_DIR/public/robots.txt" "$PUBLIC_DIR/robots.txt"
-    cp "$APP_DIR/public/sitemap.xml" "$PUBLIC_DIR/sitemap.xml"
+    if [ -f "$APP_DIR/public/robots.txt"]; then
+        cp "$APP_DIR/public/robots.txt" "$PUBLIC_DIR/robots.txt"
+    fi
+
+    if [ -f "$APP_DIR/public/sitemap.xml"]; then
+        cp "$APP_DIR/public/sitemap.xml" "$PUBLIC_DIR/sitemap.xml"
+    fi
 
     echo "Fixing permissions..."
     chmod -R 775 "$APP_DIR/storage" || true
