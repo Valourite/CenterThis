@@ -63,12 +63,16 @@ bring_app_up() {
         cp -R "$APP_DIR/public/images" "$PUBLIC_DIR/images"
     fi
 
+    echo "Linking public storage..."
+    rm -rf "$PUBLIC_DIR/storage"
+    ln -s "$APP_DIR/storage/app/public" "$PUBLIC_DIR/storage"
+
     echo "Copying SEO discovery files..."
-    if [ -f "$APP_DIR/public/robots.txt"]; then
+    if [ -f "$APP_DIR/public/robots.txt" ]; then
         cp "$APP_DIR/public/robots.txt" "$PUBLIC_DIR/robots.txt"
     fi
 
-    if [ -f "$APP_DIR/public/sitemap.xml"]; then
+    if [ -f "$APP_DIR/public/sitemap.xml" ]; then
         cp "$APP_DIR/public/sitemap.xml" "$PUBLIC_DIR/sitemap.xml"
     fi
 

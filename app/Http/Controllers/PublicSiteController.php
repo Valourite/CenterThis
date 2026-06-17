@@ -48,19 +48,6 @@ class PublicSiteController extends Controller
     {
         $categories = Category::query()
             ->select(['id', 'name', 'slug'])
-            ->with([
-                'products' => fn ($query) => $query
-                    ->select(['id', 'category_id', 'name', 'slug', 'description', 'images'])
-                    ->where('active', true)
-                    ->whereHas('variants', fn ($variantQuery) => $variantQuery->where('active', true))
-                    ->with([
-                        'variants' => fn ($variantQuery) => $variantQuery
-                            ->select(['id', 'product_id', 'label', 'quantity', 'base_rate', 'deposit_amount'])
-                            ->where('active', true)
-                            ->orderBy('base_rate'),
-                    ])
-                    ->orderBy('position'),
-            ])
             ->whereHas('products', fn ($query) => $query
                 ->where('active', true)
                 ->whereHas('variants', fn ($variantQuery) => $variantQuery->where('active', true)))
