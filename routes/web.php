@@ -33,7 +33,7 @@ Route::get('/deploy/{token}', function (Request $request, $token) {
     );
 
     $result = Process::timeout(600)->run(
-        '/bin/bash /home/centerthisco/repositories/CenerThis/deploy.sh'
+        '/bin/bash /home/centerthisco/repositories/CenterThis/deploy.sh'
     );
 
     if ($result->failed()) {
