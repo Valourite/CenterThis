@@ -135,7 +135,7 @@
                     <p class="text-xs font-semibold tracking-[0.2em] text-accent uppercase">Find us</p>
                     <div class="mt-5 grid gap-3 text-sm text-white/65">
                         <p>Gauteng, South Africa</p>
-                        <a class="transition hover:text-white" href="mailto:hello@centerthis.co.za">hello@centerthis.co.za</a>
+                        <a class="transition hover:text-white" href="mailto:admin@centerthis.co.za">admin@centerthis.co.za</a>
                         <p>Visits by appointment</p>
                     </div>
                 </div>

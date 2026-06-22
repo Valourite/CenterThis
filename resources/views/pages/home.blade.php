@@ -246,7 +246,7 @@
                     </div>
                     <div class="mt-16">
                         <p class="text-xs font-bold tracking-[0.2em] uppercase">Prefer email?</p>
-                        <a href="mailto:hello@centerthis.co.za" class="mt-3 block wrap-break-word font-display text-3xl leading-none underline decoration-1 underline-offset-8">hello@centerthis.co.za</a>
+                        <a href="mailto:admin@centerthis.co.za" class="mt-3 block wrap-break-word font-display text-3xl leading-none underline decoration-1 underline-offset-8">admin@centerthis.co.za</a>
                         <p class="mt-5 text-sm leading-6 text-black/55">Studio visits and collection by appointment.</p>
                     </div>
                 </div>
